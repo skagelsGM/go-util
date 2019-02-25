@@ -91,13 +91,11 @@ func (g *Graph) BreadthFirstSearch(start int) *list.LinkedList {
 		fmt.Printf("Visited Node: %d\n", node.Value)
 
 		// traverse adjacent nodes; add adjacent nodes to queue
-		next := g.AdjNodes[node.Value].Head
-		for next != nil {
+		for next := g.AdjNodes[node.Value].Head; next != nil; next = next.Next {
 			// Don't fall into the trap of adding the next adjacent node.
 			// Add a new node to queue to keep linked lists separate.
 			queue.Add(next.Value)
 			fmt.Printf("(added adjacent node %d to the queue)\n", next.Value)
-			next = next.Next
 		}
 	}
 
@@ -121,11 +119,9 @@ func (g *Graph) doDFS(vertex int, visited map[int]bool, path *list.LinkedList) {
 	fmt.Printf("Visited Node: %d\n", vertex)
 
 	// recursively traverse adjacent nodes
-	next := g.AdjNodes[vertex].Head
-	for next != nil {
+	for next := g.AdjNodes[vertex].Head; next != nil; next = next.Next {
 		if !visited[next.Value] {
 			g.doDFS(next.Value, visited, path)
 		}
-		next = next.Next
 	}
 }
