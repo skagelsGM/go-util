@@ -6,15 +6,10 @@ import (
 	"github.com/skagelsGM/util/list"
 )
 
-// Graph is an implementation of the graph data structure, consisting of a
-// finite set of vertices and edges. Graph is undirected.
-//
-// Edges are represents using an adjacent node list.
+// Graph is an implementation of the graph data structure, consisting of a finite set of vertices
+// and edges. Edges are represents using an array of adjacent node list. Graph is undirected.
 type Graph struct {
-	// keeps number of nodes and an adjacency list
 	Vertices int
-
-	// adjacency list: array of adjacent node lists
 	AdjNodes []list.LinkedList
 }
 
@@ -22,7 +17,6 @@ type Graph struct {
 func CreateGraph(v int) *Graph {
 	var g = new(Graph)
 	g.Vertices = v
-
 	g.AdjNodes = make([]list.LinkedList, v)
 
 	//initialize adjacent node lists
@@ -38,10 +32,9 @@ func CreateGraph(v int) *Graph {
 // Graph edges are undirected.
 func (g *Graph) AddEdge(src, dest int) {
 	g.AdjNodes[src].Add(dest)
-	fmt.Printf("Added Edge: %d -> %d\n", src, dest)
-
-	// Graph is undirected. So add the edge from dest to src, too
+	// Add the edge from dest to src, too, since Graph is undirected.
 	g.AdjNodes[dest].Add(src)
+	fmt.Printf("Added Edge: %d-%d\n", src, dest)
 }
 
 // IsAdjacent returns true if src and dest are adjacent nodes
@@ -90,10 +83,10 @@ func (g *Graph) BreadthFirstSearch(start int) *list.LinkedList {
 		visited[node.Value] = true
 		fmt.Printf("Visited Node: %d\n", node.Value)
 
-		// traverse adjacent nodes; add adjacent nodes to queue
+		// Enqueue adjacent nodes for visiting:
+		// - Don't fall into the trap of adding the next adjacent node. Enqueue a new node to keep
+		// adjacent linked lists and queue separate.
 		for next := g.AdjNodes[node.Value].Head; next != nil; next = next.Next {
-			// Don't fall into the trap of adding the next adjacent node.
-			// Add a new node to queue to keep linked lists separate.
 			queue.Add(next.Value)
 			fmt.Printf("(added adjacent node %d to the queue)\n", next.Value)
 		}
@@ -116,7 +109,7 @@ func (g *Graph) doDFS(vertex int, visited map[int]bool, path *list.LinkedList) {
 	// visit vertex
 	path.Add(vertex)
 	visited[vertex] = true
-	fmt.Printf("Visited Node: %d\n", vertex)
+	fmt.Printf("Visited Vertex: %d\n", vertex)
 
 	// recursively traverse adjacent nodes
 	for next := g.AdjNodes[vertex].Head; next != nil; next = next.Next {
