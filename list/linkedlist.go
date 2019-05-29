@@ -28,6 +28,11 @@ type LinkedList struct {
 	Head, Tail *Element
 }
 
+// CreateLinkedList is a factory function for creating a Linked List
+func CreateLinkedList() *LinkedList {
+	return new(LinkedList)
+}
+
 // addElement adds an element to the LinkedList. The element is inserted into the list as the new tail, maintaining a FIFO list (a queue).
 func (l *LinkedList) addElement(element *Element) {
 	if l.Head == nil {
